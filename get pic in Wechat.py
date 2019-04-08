@@ -1,3 +1,4 @@
+#The path need be changed when you run this program.
 import requests
 import bs4
 from bs4 import BeautifulSoup
