@@ -8,7 +8,7 @@ sys.setdefaultencoding("utf8")
 import MySQLdb
 import MySQLdb.cursors
 
-db = MySQLdb.connect(host='127.0.0.1', user='root', passwd='root', db='douban', port=8889, charset='utf8', cursorclass=MySQLdb.cursors.DictCursor)
+db = MySQLdb.connect(host='192.168.43.1', user='root', passwd='root', db='douban', port=8889, charset='utf8', cursorclass=MySQLdb.cursors.DictCursor)
 db.autocommit(True)
 cursor = db.cursor()
 
@@ -18,7 +18,7 @@ fr = open('douban_movie_clean.txt', 'r')
 count = 0
 for line in fr:
 	count += 1
-	# count表示当前处理到第几行了
+	# count当前处理到第几行了
 	print count
 	if count == 1:
 		continue
@@ -28,7 +28,6 @@ for line in fr:
 	line = line.strip().split('^')
 	cursor.execute("insert into movie(title, url, rate, length, description) values(%s, %s, %s, %s, %s)", [line[1], line[2], line[4], line[-3], line[-1]])
 
-# 关闭读文件
 fr.close()
 
 # Update
@@ -50,15 +49,11 @@ cursor.execute("select id, title, url from movie")
 movie = cursor.fetchone()
 print type(movie), len(movie), movie
 
-# 读取一条数据的部分字段
-# 按id降序排序，默认为升序
 cursor.execute("select id, title, url from movie order by id desc")
 movie = cursor.fetchone()
 print type(movie), len(movie), movie
 
 # Delete
-# 删除数据务必要提供删除条件
-# 此处删除id为1的记录
 cursor.execute("delete from movie where id=%s", [1])
 
 # 关闭数据库连接
